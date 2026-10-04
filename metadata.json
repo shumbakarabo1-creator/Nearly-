@@ -1,0 +1,6 @@
+{
+  "name": "Nearly",
+  "description": "Everyday-life discovery app that turns everyday requests into useful nearby places, shops, and services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

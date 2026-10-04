@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#4F46E5" />
+  <title>Nearly - Everyday-Life Discovery in Mpumalanga</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <div id="app" class="app-container">
+    <!-- TOP APP BAR -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-logo"><i class="fa-solid fa-location-arrow"></i></span>
+        <div class="brand-text">
+          <h1>Nearly</h1>
+          <span class="brand-tagline">Mpumalanga Discovery</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="icon-btn" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="areaSelectorBtn" class="area-pill" aria-label="Select Area">
+          <i class="fa-solid fa-location-dot"></i>
+          <span id="currentAreaText">Mbombela</span>
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN SCROLLABLE CONTENT -->
+    <main class="main-content">
+      <!-- TAB 1: HOME -->
+      <section id="homeTab" class="tab-pane active">
+        <!-- Hero Search Banner -->
+        <div class="hero-search-card" id="heroSearchTrigger">
+          <h2>Turn what you need into where to go in Mpumalanga</h2>
+          <div class="search-fake-input">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>What do you need?</span>
+          </div>
+        </div>
+
+        <!-- Natural Language Quick Prompts -->
+        <div class="section-container">
+          <div class="section-title">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Try asking like this</span>
+          </div>
+          <div class="scroll-chips" id="quickPromptsRow">
+            <button class="prompt-chip" data-query="I need a phone charger">"I need a phone charger"</button>
+            <button class="prompt-chip" data-query="Where can I print documents?">"Where can I print documents?"</button>
+            <button class="prompt-chip" data-query="I need someone to fix my phone">"Fix my phone"</button>
+            <button class="prompt-chip" data-query="Where can I buy school supplies?">"School supplies"</button>
+            <button class="prompt-chip" data-query="I need a nearby barber">"Nearby barber"</button>
+            <button class="prompt-chip" data-query="Where can I buy groceries?">"Groceries"</button>
+            <button class="prompt-chip" data-query="Emergency plumber or locksmith">"Emergency locksmith"</button>
+          </div>
+        </div>
+
+        <!-- Category Shortcuts -->
+        <div class="section-container">
+          <div class="section-header-row">
+            <h3>Browse Categories</h3>
+            <button class="link-btn" id="viewAllCategoriesBtn">View all</button>
+          </div>
+          <div class="category-grid" id="homeCategoryGrid">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Saved Places Quick Banner -->
+        <div id="homeSavedBanner" class="saved-banner-card hidden">
+          <div class="saved-banner-content">
+            <div class="saved-banner-icon"><i class="fa-solid fa-bookmark"></i></div>
+            <div>
+              <h4 id="savedBannerTitle">0 Places Saved</h4>
+              <p>Ready for quick access</p>
+            </div>
+          </div>
+          <i class="fa-solid fa-arrow-right"></i>
+        </div>
+
+        <!-- Recent Searches Section -->
+        <div id="homeRecentSearches" class="section-container hidden">
+          <div class="section-title">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Recent Searches</span>
+          </div>
+          <div class="scroll-chips" id="recentSearchesRow">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Nearby Recommendations -->
+        <div class="section-container">
+          <div class="section-header-row">
+            <div>
+              <h3>Nearby Recommendations</h3>
+              <p class="section-subtitle" id="recommendationSubtitle">Open right now in Mbombela</p>
+            </div>
+          </div>
+          <div class="cards-list" id="recommendationsList">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: SEARCH -->
+      <section id="searchTab" class="tab-pane">
+        <!-- Search Input Bar -->
+        <div class="search-bar-wrap">
+          <div class="search-input-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Search anything (e.g. phone charger, print, fix phone)" autocomplete="off" />
+            <button id="clearSearchBtn" class="clear-btn hidden" aria-label="Clear"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <button id="toggleMapViewBtn" class="filter-toggle-btn" aria-label="Toggle Map View" title="Switch to Google Maps view">
+            <i class="fa-solid fa-map"></i>
+          </button>
+          <button id="filterToggleBtn" class="filter-toggle-btn" aria-label="Filters">
+            <i class="fa-solid fa-sliders"></i>
+          </button>
+        </div>
+
+        <!-- Filter Drawer / Expandable Panel -->
+        <div id="filterDrawer" class="filter-drawer hidden">
+          <div class="filter-group">
+            <label>Category</label>
+            <div class="scroll-chips" id="searchCategoryChips">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+          <div class="filter-group">
+            <label>Maximum Distance from City Center</label>
+            <div class="segmented-chips" id="distanceFilterRow">
+              <button class="seg-btn active" data-dist="all">Any</button>
+              <button class="seg-btn" data-dist="1">&lt; 1 km</button>
+              <button class="seg-btn" data-dist="3">&lt; 3 km</button>
+              <button class="seg-btn" data-dist="5">&lt; 5 km</button>
+            </div>
+          </div>
+          <div class="filter-row-between">
+            <label>Open Now Only</label>
+            <input type="checkbox" id="openNowSwitch" class="toggle-switch" />
+          </div>
+          <div class="filter-row-between">
+            <label>Sort By</label>
+            <select id="sortSelect" class="styled-select">
+              <option value="relevance">Best Match</option>
+              <option value="nearest">Nearest First</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button id="resetFiltersBtn" class="btn-text">Reset</button>
+            <button id="applyFiltersBtn" class="btn-primary-sm">Apply</button>
+          </div>
+        </div>
+
+        <!-- Active Filter Indicator -->
+        <div class="results-header">
+          <span id="resultsCountText">Showing all places</span>
+          <button id="quickClearFiltersBtn" class="link-btn hidden">Clear filters</button>
+        </div>
+
+        <!-- Search Map Container (Google Maps interactive spatial view) -->
+        <div id="searchMapContainer" class="hidden">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Search Results List -->
+        <div class="cards-list" id="searchResultsList">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Empty Results State -->
+        <div id="searchEmptyState" class="empty-state-card hidden">
+          <i class="fa-solid fa-compass"></i>
+          <h4>No places found</h4>
+          <p>Try searching with simpler terms or changing your maximum distance filter.</p>
+          <button id="emptyStateResetBtn" class="btn-secondary">Reset Search Filters</button>
+        </div>
+      </section>
+
+      <!-- TAB 3: SAVED PLACES -->
+      <section id="savedTab" class="tab-pane">
+        <div class="section-header-row">
+          <div>
+            <h3>Saved Places</h3>
+            <p class="section-subtitle">Persisted locally for instant offline access</p>
+          </div>
+          <span class="count-badge" id="savedCountBadge">0</span>
+        </div>
+
+        <!-- Category filter within saved -->
+        <div class="scroll-chips" id="savedCategoryFilterRow">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Saved Places List -->
+        <div class="cards-list" id="savedPlacesList">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Saved Empty State -->
+        <div id="savedEmptyState" class="empty-state-card hidden">
+          <i class="fa-regular fa-bookmark"></i>
+          <h4>No saved places yet</h4>
+          <p>Tap the bookmark icon on any place card to save it here for fast access anytime.</p>
+          <button id="savedExploreBtn" class="btn-primary">Discover Places</button>
+        </div>
+      </section>
+
+      <!-- TAB 4: PROFILE -->
+      <section id="profileTab" class="tab-pane">
+        <!-- Profile Card -->
+        <div class="profile-card">
+          <div class="profile-avatar">
+            <span id="profileInitial">K</span>
+          </div>
+          <div class="profile-meta">
+            <div class="profile-name-row">
+              <h3 id="profileNameDisplay">Karabo Shumba</h3>
+              <button id="editNameBtn" class="icon-btn-sm" aria-label="Edit Name"><i class="fa-solid fa-pen"></i></button>
+            </div>
+            <button id="profileAreaChangeBtn" class="link-area">
+              <i class="fa-solid fa-location-dot"></i>
+              <span id="profileAreaText">Mbombela (Nelspruit), Mpumalanga</span>
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats Counter -->
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-num" id="statSavedCount">0</span>
+            <span class="stat-lbl">Saved</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" id="statSearchCount">0</span>
+            <span class="stat-lbl">Searches</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">10</span>
+            <span class="stat-lbl">MP Towns</span>
+          </div>
+        </div>
+
+        <!-- Settings Group -->
+        <div class="settings-card">
+          <h4>Preferences &amp; Settings</h4>
+          <div class="setting-item">
+            <span><i class="fa-solid fa-palette"></i> Appearance</span>
+            <div class="segmented-chips-sm" id="themeSegmented">
+              <button data-theme="system" class="seg-sm active">Auto</button>
+              <button data-theme="light" class="seg-sm">Light</button>
+              <button data-theme="dark" class="seg-sm">Dark</button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <span><i class="fa-solid fa-map-location"></i> Base Province</span>
+            <span class="badge-success">Mpumalanga</span>
+          </div>
+          <div class="setting-item">
+            <span><i class="fa-solid fa-database"></i> Persistence</span>
+            <span class="badge-success">LocalStorage Active</span>
+          </div>
+          <div class="setting-item" id="aboutBtn">
+            <span><i class="fa-solid fa-circle-info"></i> About Nearly V1</span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <!-- History Management -->
+        <div class="section-container">
+          <div class="section-header-row">
+            <h4>Search History</h4>
+            <button id="clearAllHistoryBtn" class="link-danger-btn">Clear all</button>
+          </div>
+          <div id="profileSearchHistoryList" class="history-list">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- BOTTOM MOBILE NAVIGATION -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-tab="homeTab">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-tab="searchTab">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span>Search</span>
+      </button>
+      <button class="nav-item" data-tab="savedTab">
+        <div class="nav-icon-wrap">
+          <i class="fa-solid fa-bookmark"></i>
+          <span class="nav-badge hidden" id="navSavedBadge">0</span>
+        </div>
+        <span>Saved</span>
+      </button>
+      <button class="nav-item" data-tab="profileTab">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+      </button>
+    </nav>
+
+    <!-- AREA SELECTOR MODAL (MPUMALANGA HUBS) -->
+    <div id="areaModal" class="modal-backdrop hidden">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <h3>Select Your City or Town</h3>
+          <button class="close-modal-btn" id="closeAreaModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <p class="modal-sub">Mpumalanga is Nearly's primary base province. Distances calculate from your selected town:</p>
+        <div class="area-options-list" id="areaOptionsList">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACE DETAILS MODAL -->
+    <div id="placeDetailModal" class="modal-backdrop hidden">
+      <div class="modal-sheet modal-large">
+        <div class="modal-header">
+          <span class="detail-category-badge" id="detailCategoryBadge">Food</span>
+          <div class="modal-top-actions">
+            <button id="detailShareBtn" class="icon-btn" aria-label="Share"><i class="fa-solid fa-share-nodes"></i></button>
+            <button id="detailSaveBtn" class="icon-btn" aria-label="Save"><i class="fa-regular fa-bookmark"></i></button>
+            <button class="close-modal-btn" id="closeDetailModal"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+        <div class="detail-content" id="detailContent">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- GOOGLE MAPS DIRECTIONS MODAL -->
+    <div id="directionsModal" class="modal-backdrop hidden">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-map-location-dot" style="color: #4285F4; font-size: 1.25rem;"></i>
+            <h3>Google Maps Directions</h3>
+          </div>
+          <button class="close-modal-btn" id="closeDirectionsModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="detail-content" id="directionsContent">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT NAME MODAL -->
+    <div id="editNameModal" class="modal-backdrop hidden">
+      <div class="modal-sheet modal-compact">
+        <div class="modal-header">
+          <h3>Edit Profile Name</h3>
+          <button class="close-modal-btn" id="closeNameModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-form">
+          <input type="text" id="nameInput" placeholder="Enter your name" />
+          <button id="saveNameBtn" class="btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT MODAL -->
+    <div id="aboutModal" class="modal-backdrop hidden">
+      <div class="modal-sheet modal-compact">
+        <div class="modal-header">
+          <h3>Nearly V1</h3>
+          <button class="close-modal-btn" id="closeAboutModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="about-body">
+          <p><strong>Nearly</strong> is an everyday-life discovery app that turns natural requests into useful nearby services and shops.</p>
+          <ul>
+            <li>Base Province: <strong>Mpumalanga, South Africa</strong></li>
+            <li>Key Hubs: Mbombela, eMalahleni, Middelburg, Secunda, White River, Barberton, Hazyview, Ermelo, Standerton, Lydenburg</li>
+            <li>Navigation: <strong>Integrated Google Maps</strong> (Turn-by-turn driving, walking, transit)</li>
+            <li>Storage: LocalStorage &amp; SQLite Room</li>
+          </ul>
+          <button id="closeAboutBtn" class="btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
